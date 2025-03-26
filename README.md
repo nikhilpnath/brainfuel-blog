@@ -3,7 +3,7 @@
 
 Easily create, manage, and share blog posts with a clean interface and smooth writing experience. Whether it’s a quick thought or a detailed article, this app helps you stay organized and connect with your readers.
 
-![Image](https://github.com/user-attachments/assets/36665f33-ac77-4a79-9b80-e668954b0e10)
+![Image](https://github.com/user-attachments/assets/4d00ab39-7977-4920-ae07-25ddfac1b04e)
 
 
 ## Environment Variables
