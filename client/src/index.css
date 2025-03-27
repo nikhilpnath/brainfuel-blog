@@ -4,10 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html,body{
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+}
 body {
   background: #e6e6ff;
-  width: 100%;
-  overflow-x: hidden;
   font-family: "Montserrat", sans-serif;
   scroll-behavior: smooth;
 }
