@@ -3,8 +3,8 @@ import { format } from "timeago.js";
 import { useUser } from "@clerk/clerk-react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { TComment } from "../../types/types";
-import {useUseMutationHook} from "../../hooks";
+import { TComment } from "@/types/types";
+import { useUseMutationHook } from "@/hooks";
 
 type TProp = {
   data: TComment;

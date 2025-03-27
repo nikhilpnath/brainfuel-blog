@@ -2,8 +2,8 @@ import { Outlet } from "react-router";
 
 import Navbar from "./Navbar";
 import Breadcrumbs from "./Breadcrumbs";
-import {useNetworkStatus} from "../hooks";
-import ErrorBoundary from "../errorBoundary";
+import {useNetworkStatus} from "@/hooks";
+import ErrorBoundary from "@/errorBoundary";
 
 const MainLayout = () => {
   useNetworkStatus(true); // to show offline and online status

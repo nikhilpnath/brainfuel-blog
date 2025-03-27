@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { toast } from "react-toastify";
 import { IKContext, IKUpload } from "imagekitio-react";
 
-import { MediaUploadSucess } from "../../types/types";
+import { MediaUploadSucess } from "@/types/types";
 
 // imagekit - authenticator
 const authenticator = async () => {

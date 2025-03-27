@@ -1,9 +1,9 @@
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { PostItem } from "../";
-import { TPostQueryData } from "../../types/types";
-import { usePostInfiniteQueryHook } from "../../hooks";
+import { PostItem } from "@/components";
+import { TPostQueryData } from "@/types/types";
+import { usePostInfiniteQueryHook } from "@/hooks";
 
 const fetchPosts = async (pageParam: number): Promise<TPostQueryData> => {
   const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/posts`, {

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { useUseMutationHook } from "../../../hooks";
+import { useUseMutationHook } from "@/hooks";
 
 const DeletePost = ({ postId }: { postId: string }) => {
   const navigate = useNavigate();

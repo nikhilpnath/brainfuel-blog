@@ -1,8 +1,8 @@
 import { useLocation, useNavigate, useSearchParams } from "react-router";
 
-import { SearchBar } from "../";
-import { CategoriesColl, sort } from "../../utils/data";
-import { updateSearchParams } from "../../utils/updateSearchParams";
+import { SearchBar } from "@/components";
+import { CategoriesColl, sort } from "@/utils/data";
+import { updateSearchParams } from "@/utils/updateSearchParams";
 
 const Sidemenu = ({ showFilter = true }: { showFilter?: boolean }) => {
   const navigate = useNavigate();

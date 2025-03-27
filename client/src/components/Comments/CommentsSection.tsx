@@ -5,8 +5,8 @@ import { useUser } from "@clerk/clerk-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import Comment from "./Comment";
-import { TComment } from "../../types/types";
-import {useUseQueryHook,useUseMutationHook} from "../../hooks";
+import { TComment } from "@/types/types";
+import {useUseQueryHook,useUseMutationHook} from "@/hooks";
 
 type TUseQueryComments = Array<TComment>;
 

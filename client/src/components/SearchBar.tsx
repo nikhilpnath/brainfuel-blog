@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router";
-import { updateSearchParams } from "../utils/updateSearchParams";
+import { updateSearchParams } from "@/utils/updateSearchParams";
 
 const SearchBar = () => {
 

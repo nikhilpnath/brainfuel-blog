@@ -4,9 +4,9 @@ import { useSearchParams } from "react-router";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { TPostQueryData } from "../types/types";
-import { PostItem, Sidemenu } from "../components";
-import { useDebounceValue, usePostInfiniteQueryHook } from "../hooks";
+import { TPostQueryData } from "@/types/types";
+import { PostItem, Sidemenu } from "@/components";
+import { useDebounceValue, usePostInfiniteQueryHook } from "@/hooks";
 
 const fetchPostsWithParams = async (
   pageParam: number,

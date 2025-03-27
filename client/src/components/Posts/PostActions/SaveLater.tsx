@@ -1,9 +1,9 @@
-import { useAuth } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
+import { useAuth } from "@clerk/clerk-react";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { debounceMutation } from "../../../utils/debounceMutation";
-import { useUseMutationHook, useUseQueryHook } from "../../../hooks";
+import { debounceMutation } from "@/utils/debounceMutation";
+import { useUseMutationHook, useUseQueryHook } from "@/hooks";
 
 const SaveLater = ({ postId }: { postId: string }) => {
   const { isSignedIn } = useAuth();

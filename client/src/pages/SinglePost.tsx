@@ -12,9 +12,9 @@ import {
   ErrorCmp,
   PostActions,
   Sidemenu,
-} from "../components";
-import { useUseQueryHook } from "../hooks";
-import { TPosts as TUSeQueryData } from "../types/types";
+} from "@/components";
+import { useUseQueryHook } from "@/hooks";
+import { TPosts as TUSeQueryData } from "@/types/types";
 
 const SinglePost = () => {
   const { slug } = useParams<{ slug: string }>();

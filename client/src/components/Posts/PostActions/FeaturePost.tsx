@@ -1,8 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 
-import { TPosts as TUSeQueryData } from "../../../types/types";
-import { debounceMutation } from "../../../utils/debounceMutation";
-import { useUseMutationHook, useUseQueryHook } from "../../../hooks";
+import { TPosts as TUSeQueryData } from "@/types/types";
+import { debounceMutation } from "@/utils/debounceMutation";
+import { useUseMutationHook, useUseQueryHook } from "@/hooks";
 
 const FeaturePost = ({ postId, slug }: { postId: string; slug: string }) => {
   const queryClient = useQueryClient();

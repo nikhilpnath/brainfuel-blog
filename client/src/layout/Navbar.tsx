@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
-import { Image } from "../components";
+import { Image } from "@/components";
 
 function Links({
   className,

@@ -1,9 +1,9 @@
-import { Link, useLocation, useNavigate } from "react-router";
 import { format } from "timeago.js";
+import { Link, useLocation, useNavigate } from "react-router";
 
-import { Image as ImageCmp } from "../";
-import { TPosts } from "../../types/types";
-import { updateSearchParams } from "../../utils/updateSearchParams";
+import { TPosts } from "@/types/types";
+import { Image as ImageCmp } from "@/components";
+import { updateSearchParams } from "@/utils/updateSearchParams";
 
 type TParam = {
   post: TPosts;

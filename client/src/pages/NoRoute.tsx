@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router";
-import { ErrorCmp } from "../components";
+import { ErrorCmp } from "@/components";
 
 const NoRoute = () => {
   const location = useLocation();

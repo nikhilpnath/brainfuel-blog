@@ -4,10 +4,10 @@ import { useNavigate } from "react-router";
 import ReactQuill from "react-quill-new";
 import { useUser } from "@clerk/clerk-react";
 
-import { useUseMutationHook } from "../hooks";
-import { CategoriesColl } from "../utils/data";
-import { TMedia, TPosts } from "../types/types";
-import { ErrorCmp, Upload } from "../components";
+import { useUseMutationHook } from "@/hooks";
+import { CategoriesColl } from "@/utils/data";
+import { TMedia, TPosts } from "@/types/types";
+import { ErrorCmp, Upload } from "@/components";
 
 type TFormData = Omit<
   TPosts,

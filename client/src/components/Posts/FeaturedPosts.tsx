@@ -2,11 +2,10 @@ import { Link } from "react-router";
 
 import { format } from "timeago.js";
 
-import { Image } from "../";
-import { featuredPosts } from "../../utils/data";
-import { TPostQueryData } from "../../types/types";
-import useUseQueryHook from "../../hooks/useUseQuery.hook";
-import useNetworkStatus from "../../hooks/useNetworkStatus.hook";
+import { Image } from "@/components";
+import { featuredPosts } from "@/utils/data";
+import { TPostQueryData } from "@/types/types";
+import { useUseQueryHook, useNetworkStatus } from "@/hooks";
 
 const FeaturedPosts = () => {
   const isOnline = useNetworkStatus(false);

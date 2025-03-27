@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
-import NoRoute from "../pages/NoRoute";
-import MainLayout from "../layout/MainLayout";
+import NoRoute from "@/pages/NoRoute";
+import MainLayout from "@/layout/MainLayout";
 import { lazyLoad } from "./lazy/lazy.component";
 
 

@@ -1,5 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from "react";
-import ErrorCmp from "./components/Error";
+import ErrorCmp from "@/components/Error";
 
 type TProps = {
   children?: ReactNode;

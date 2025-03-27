@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Categories, FeaturedPosts, RecentPosts } from "../components";
+import { Categories, FeaturedPosts, RecentPosts } from "@/components";
 
 const Homepage = () => {
 

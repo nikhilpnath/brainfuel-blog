@@ -3,7 +3,7 @@ import { useAuth } from "@clerk/clerk-react";
 import axios, { AxiosRequestConfig } from "axios";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 
-import { TAxiosError, TMutationSuccessData } from "../types/types";
+import { TAxiosError, TMutationSuccessData } from "@/types/types";
 
 type TMutationParams<V> = {
   url: string;

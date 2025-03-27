@@ -2,12 +2,12 @@ import { lazy } from "react";
 import { Suspense } from "react";
 
 const pathToModuleMap = {
-  Homepage: () => import("../../pages/Homepage"),
-  Login: () => import("../../pages/Login"),
-  Register: () => import("../../pages/Register"),
-  SinglePost: () => import("../../pages/SinglePost"),
-  PostLists: () => import("../../pages/PostLists"),
-  NewPost: () => import("../../pages/NewPost"),
+  Homepage: () => import("@/pages/Homepage"),
+  Login: () => import("@/pages/Login"),
+  Register: () => import("@/pages/Register"),
+  SinglePost: () => import("@/pages/SinglePost"),
+  PostLists: () => import("@/pages/PostLists"),
+  NewPost: () => import("@/pages/NewPost"),
 } as const;
 
 type ComponentKey = keyof typeof pathToModuleMap;

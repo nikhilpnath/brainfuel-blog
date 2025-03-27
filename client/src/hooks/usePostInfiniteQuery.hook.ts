@@ -1,4 +1,4 @@
-import { TAxiosError, TPostQueryData, TPosts } from "../types/types";
+import { TAxiosError, TPostQueryData, TPosts } from "@/types/types";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 
 type tUseCustomHookReturn = {

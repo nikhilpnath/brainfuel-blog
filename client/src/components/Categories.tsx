@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
 import { SearchBar } from "./";
-import { CategoriesColl } from "../utils/data";
+import { CategoriesColl } from "@/utils/data";
 
 //For home page
 const Categories = () => {

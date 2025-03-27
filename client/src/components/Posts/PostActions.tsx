@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-react";
 
-import { TPosts, TUser } from "../../types/types";
+import { TPosts, TUser } from "@/types/types";
 
 import SaveLater from "./PostActions/SaveLater";
 import DeletePost from "./PostActions/DeletePost";
