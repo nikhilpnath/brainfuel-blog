@@ -43,10 +43,10 @@ const Navbar = () => {
       if (!open) {
         return;
       }
-      document.documentElement.style.overflowY = "hidden";
+      document.body.style.overflowY = "hidden";
 
       return () => {
-        document.documentElement.style.overflowY = "scroll";
+        document.body.style.overflowY = "scroll";
       };
     },
     [open]
