@@ -1,6 +1,5 @@
+import { Link } from "react-router";
 import { useEffect, useState } from "react";
-
-import { Link, useLocation } from "react-router";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
 import { Image } from "@/components";
@@ -13,7 +12,7 @@ function Links({
   screen: "mobile" | "desktop";
 }) {
   return (
-    <div className={className}>
+    <div className={`${className} linksCollection`}>
       <Link to="/">Home</Link>
       {screen === "mobile" && <Link to="/create">Create Post</Link>}
       <Link to="/posts?sort=trending">Trending</Link>
@@ -35,7 +34,6 @@ function Links({
 
 const Navbar = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const location = useLocation(); // Get current route
 
   //disabling scroll on y direction when the navbar is open
   useEffect(
@@ -52,13 +50,28 @@ const Navbar = () => {
     [open]
   );
 
-  // Close menu automatically when route changes
-  useEffect(
-    function closeMenu() {
+  // Close the menu when a menu item is clicked 
+  useEffect(() => {
+
+    if (!open || window.innerWidth >= 768) return;
+
+    const closeMenu = () => {
       setOpen(false);
-    },
-    [location.pathname]
-  );
+    };
+
+    if (window.innerWidth < 768) {
+      const links = document.querySelectorAll(".linksCollection a");
+
+      links.forEach((link) => {
+        link.removeEventListener("click", closeMenu);
+        link.addEventListener("click", closeMenu);
+      });
+
+      return () => {
+        links.forEach((link) => link.removeEventListener("click", closeMenu));
+      };
+    }
+  }, [open]);
 
   return (
     <div className="w-full h-16 md:h-20 flex items-center justify-between">
@@ -86,10 +99,10 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Menu */}
-        <Links
+      <Links
         className="hidden md:flex items-center gap-8 xl:gap-12 font-medium"
         screen="desktop"
-        />
+      />
     </div>
   );
 };
