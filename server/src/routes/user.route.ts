@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserSavedPosts, addOrRemovePost } from "../controllers/user.controller";
+import { getUserSavedPosts, addOrRemovePost } from "@controllers/user.controller";
 
 const router = Router();
 

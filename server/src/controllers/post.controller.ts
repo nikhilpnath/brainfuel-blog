@@ -1,11 +1,11 @@
 import { RequestHandler } from "express";
 import ImageKit from "imagekit";
 
-import Post from "../models/post.model";
-import User from "../models/user.model";
-import { createError } from "../util/customError";
+import Post from "@models/post.model";
+import User from "@models/user.model";
+import { createError } from "@util/customError";
 
-import { TPostType } from "../types/post.types";
+import  { TPostType } from "../types/post.types";
 import { TCustomRequestHandler } from "../types/request.dto.types";
 
 type TQueryParams = {

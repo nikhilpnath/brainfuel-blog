@@ -1,14 +1,18 @@
 import morgan from "morgan";
 import cors, { CorsOptions } from "cors";
+
+import "module-alias/register";
+//It makes path aliases (@alias/...) work in JavaScript after compiling TypeScript.
+
 import express, { Application } from "express";
 import { clerkMiddleware } from "@clerk/express";
 
 import router from "./routes";
 import logger from "./logger";
-import { connectToDB } from "./config/connectDB";
-import webhookRoute from "./routes/webhook.route";
-import { errorHandler } from "./middleware/errorHandler.middleware";
-import { IKUploadAuth } from "./middleware/ikUploadHandler.middleware";
+import { connectToDB } from "@config/connectDB";
+import webhookRoute from "@routes/webhook.route";
+import { errorHandler } from "@middleware/errorHandler.middleware";
+import { IKUploadAuth } from "@middleware/ikUploadHandler.middleware";
 
 const app: Application = express();
 const PORT = Number(process.env.PORT) || 8000;

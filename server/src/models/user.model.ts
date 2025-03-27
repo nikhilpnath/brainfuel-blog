@@ -1,5 +1,5 @@
 import { model, Schema, Types } from "mongoose";
-import { createError } from "../util/customError";
+import { createError } from "@util/customError";
 import { TUserDocument, TUserModel } from "../types/user.types";
 
 const userSchema = new Schema<TUserDocument>(

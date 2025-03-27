@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { increaseVisit } from "../middleware/increaseVisit.middleware";
-import { getPosts, getPost, createPost, deletePost, uploadAuth, featurePost } from "../controllers/post.controller";
+import { increaseVisit } from "@middleware/increaseVisit.middleware";
+import { getPosts, getPost, createPost, deletePost, uploadAuth, featurePost } from "@controllers/post.controller";
 
 const router = Router();
 

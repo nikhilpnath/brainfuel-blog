@@ -7,6 +7,14 @@
     "start": "tsc && node dist/server.js",
     "dev": "tsx watch --env-file .env src/server.ts"
   },
+  "_moduleAliases": {
+    "@util": "dist/util",
+    "@routes": "dist/routes",
+    "@config": "dist/config",
+    "@models": "dist/models",
+    "@middleware": "dist/middleware",
+    "@controllers": "dist/controllers"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,6 +25,7 @@
     "cors": "^2.8.5",
     "express": "^5.0.1",
     "imagekit": "^6.0.0",
+    "module-alias": "^2.2.3",
     "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
     "svix": "^1.45.1",

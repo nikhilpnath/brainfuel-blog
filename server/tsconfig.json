@@ -10,6 +10,17 @@
     "skipLibCheck": true,
     "rootDir": "./src",
     "outDir": "./dist",
+
+    /*Path Aliases*/
+    "baseUrl": "./src",
+    "paths": {
+      "@util/*": ["util/*"],
+      "@routes/*": ["routes/*"],
+      "@config/*": ["config/*"],
+      "@models/*": ["models/*"],
+      "@middleware/*": ["middleware/*"],
+      "@controllers/*": ["controllers/*"],
+    }
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules", "dist"]

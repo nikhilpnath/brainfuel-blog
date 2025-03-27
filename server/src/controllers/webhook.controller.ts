@@ -2,9 +2,9 @@ import { RequestHandler } from "express"
 import { IncomingHttpHeaders } from "http";
 import { Webhook, WebhookRequiredHeaders } from "svix";
 
-import User from '../models/user.model';
-import Post from '../models/post.model';
-import Comment from '../models/comment.model'
+import User from '@models/user.model';
+import Post from '@models/post.model';
+import Comment from '@models/comment.model'
 
 type TUserCreatedEventData = {
     id: string;

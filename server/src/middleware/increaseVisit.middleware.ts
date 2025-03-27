@@ -1,4 +1,4 @@
-import Post from "../models/post.model";
+import Post from "@models/post.model";
 import { TCustomRequestHandler } from "../types/request.dto.types";
 
 export const increaseVisit: TCustomRequestHandler<{ slug: string }> = async (

@@ -1,6 +1,6 @@
-import User from "../models/user.model";
-import Comment from "../models/comment.model";
-import { createError } from "../util/customError";
+import User from "@models/user.model";
+import Comment from "@models/comment.model";
+import { createError } from "@util/customError";
 import { TCustomRequestHandler } from "../types/request.dto.types";
 
 // Get Comments
