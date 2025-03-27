@@ -48,7 +48,7 @@ const PostLists = () => {
         {message ? (
           <p className="flex-[2_2_0] text-xl">{message}</p>
         ) : (
-          <div className={`${open ? "mt-5" : ""}`}>
+          <div className={`${open ? "mt-5" : ""} flex-[2_2_0]`}>
             <InfiniteScroll
               dataLength={allPosts.length}
               next={fetchNextPage}
