@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
-    "moduleResolution": "node",
     "noEmitOnError": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,14 +11,13 @@
     "outDir": "./dist",
 
     /*Path Aliases*/
-    "baseUrl": "./src",
     "paths": {
-      "@util/*": ["util/*"],
-      "@routes/*": ["routes/*"],
-      "@config/*": ["config/*"],
-      "@models/*": ["models/*"],
-      "@middleware/*": ["middleware/*"],
-      "@controllers/*": ["controllers/*"],
+      "@util/*": ["./src/util/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@config/*": ["./src/config/*"],
+      "@models/*": ["./src/models/*"],
+      "@middleware/*": ["./src/middleware/*"],
+      "@controllers/*": ["./src/controllers/*"]
     }
   },
   "include": ["./src/**/*"],
