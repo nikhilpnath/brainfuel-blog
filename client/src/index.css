@@ -1,8 +1,6 @@
 @import "react-quill-new/dist/quill.snow.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 html,body{
   position: relative;
