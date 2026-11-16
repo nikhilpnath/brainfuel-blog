@@ -1,22 +1,21 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { useDebounceCallback, useUseMutationHook } from "@/hooks";
 
-import { TPosts as TUSeQueryData } from "@/types/types";
-import { useDebounceCallback, useUseMutationHook, useUseQueryHook } from "@/hooks";
+type TProps = {
+  postId: string;
+  slug: string;
+  isFeatured?: boolean;
+};
 
-const FeaturePost = ({ postId, slug }: { postId: string; slug: string }) => {
+const FeaturePost = ({ postId, slug, isFeatured = false }: TProps) => {
   const queryClient = useQueryClient();
-
-  const { data } = useUseQueryHook<TUSeQueryData>({
-    queryKey: ["featurepost", slug],
-    url: `posts/${slug}`,
-  });
 
   const featurePostMutation = useUseMutationHook<{ postId: string }>({
     url: "posts/feature",
     method: "patch",
     options: {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["featurepost", slug] });
+        queryClient.invalidateQueries({ queryKey: ["post", slug] });
         queryClient.invalidateQueries({ queryKey: ["featuredPost"] });
         queryClient.invalidateQueries({ queryKey: ["posts"] });
       },
@@ -43,7 +42,7 @@ const FeaturePost = ({ postId, slug }: { postId: string; slug: string }) => {
             d="M24 2L29.39 16.26L44 18.18L33 29.24L35.82 44L24 37L12.18 44L15 29.24L4 18.18L18.61 16.26L24 2Z"
             stroke="black"
             strokeWidth="2"
-            fill={data?.isFeatured ? "black" : "none"}
+            fill={isFeatured ? "black" : "none"}
           />
         </svg>
         <span>Feature</span>

@@ -26,6 +26,7 @@ const PostActions = ({ post }: { post: TProps }) => {
         <FeaturePost
           postId={post._id}
           slug={post.slug}
+          isFeatured={Boolean(post.isFeatured)}
         />
       )}
 

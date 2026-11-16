@@ -1,9 +1,5 @@
 import morgan from "morgan";
 import cors, { CorsOptions } from "cors";
-
-import "module-alias/register";
-//It makes path aliases (@alias/...) work in JavaScript after compiling TypeScript.
-
 import express, { Application } from "express";
 import helmet from "helmet";
 import { clerkMiddleware } from "@clerk/express";
@@ -60,9 +56,6 @@ app
     })
   );
 
-//db connection
-connectToDB();
-
 // rate limiting for api routes
 app.use("/api", generalLimiter);
 
@@ -71,4 +64,10 @@ app.use(router);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log("Running on Port", PORT));
+// Establish database connection before accepting HTTP requests
+const startServer = async () => {
+  await connectToDB();
+  app.listen(PORT, () => console.log("Running on Port", PORT));
+};
+
+startServer();
