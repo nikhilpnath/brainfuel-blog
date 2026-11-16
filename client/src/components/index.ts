@@ -2,6 +2,7 @@ import Image from "./Image";
 import ErrorCmp from "./Error";
 import SearchBar from "./SearchBar";
 import Categories from "./Categories";
+import InfiniteScroll from "./InfiniteScroll";
 
 import Upload from "./Posts/Upload";
 import PostItem from "./Posts/PostItem";
@@ -21,6 +22,7 @@ export {
   SearchBar,
   Categories,
   RecentPosts,
+  InfiniteScroll,
   PostActions,
   FeaturedPosts,
   CommentsSection,

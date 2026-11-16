@@ -1,4 +1,4 @@
-import { format } from "timeago.js";
+import { format } from "@/utils/timeAgo";
 import { Link, useLocation, useNavigate } from "react-router";
 
 import { TPosts } from "@/types/types";
@@ -48,25 +48,21 @@ const PostItem = ({ post }: TParam) => {
         </Link>
         <div className="flex items-center gap-2 text-gray-400 text-sm">
           <span>Written by</span>
-          <span
-            tabIndex={0}
-            role="button"
-            className="text-blue-800"
+          <button
+            type="button"
+            className="text-blue-800 hover:underline cursor-pointer"
             onClick={() => handleParams("author")(post.user.username)}
-            //currying - js
           >
             {post.user.username}
-          </span>
+          </button>
           <span>on</span>
-          <span
-            tabIndex={0}
-            role="button"
-            className="text-blue-800"
+          <button
+            type="button"
+            className="text-blue-800 hover:underline cursor-pointer"
             onClick={() => handleParams("cat")(post.category)}
-            //currying - js
           >
             {category}
-          </span>
+          </button>
           <span>{format(post.createdAt)}</span>
         </div>
         <p>{post.desc.substring(0, 300)}...</p>

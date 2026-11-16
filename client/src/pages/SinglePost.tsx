@@ -2,9 +2,8 @@ import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 
 import DOMPurify from "dompurify";
-import { format } from "timeago.js";
+import { format } from "@/utils/timeAgo";
 import { toast } from "react-toastify";
-import ReactHtmlParser from "react-html-parser";
 
 import {
   CommentsSection,
@@ -101,9 +100,10 @@ const SinglePost = () => {
       {/* second section */}
       <div className="flex flex-col md:flex-row gap-12">
         {/* content */}
-        <div className="flex flex-col gap-6 text-justify lg:text-lg md:w-4/5 post-content flex-[2_2_0]">
-          {ReactHtmlParser(sanitizedHTML)}
-        </div>
+        <div
+          className="flex flex-col gap-6 text-justify lg:text-lg md:w-4/5 post-content flex-[2_2_0]"
+          dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
+        />
 
         {/* sidemenu - sticky */}
         <div className="h-max sticky top-8 flex-1">

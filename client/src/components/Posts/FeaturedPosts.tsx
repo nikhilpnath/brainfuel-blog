@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import { format } from "timeago.js";
+import { format } from "@/utils/timeAgo";
 
 import { Image } from "@/components";
 import { featuredPosts } from "@/utils/data";
@@ -20,7 +20,6 @@ const FeaturedPosts = () => {
 
   const Posts = (data && data?.posts) || [];
 
-  let count = 2;
   const firstSection = Posts.length > 0 ? Posts[0] : featuredPosts[0];
   const remainingSection =
     Posts.slice(1).length > 0 ? Posts.slice(1) : featuredPosts.slice(1);
@@ -32,14 +31,15 @@ const FeaturedPosts = () => {
     <div className="flex flex-col lg:flex-row gap-8 mt-8">
       {/* First section*/}
       <div className="w-full lg:w-1/2 flex flex-col gap-4">
-          <Image
-            key={firstSection.img}
-            src={firstSection.img}
-            alt="featured_image"
-            className="rounded-3xl"
-            w="895"
-            h="590"
-          />
+        <Image
+          key={firstSection.img}
+          src={firstSection.img}
+          alt="featured_image"
+          className="rounded-3xl"
+          w="895"
+          h="590"
+          priority="high"
+        />
         {/* details */}
         <div className="flex items-center gap-4">
           <h1 className="lg:text-lg font-semibold">01.</h1>
@@ -83,7 +83,7 @@ const FeaturedPosts = () => {
               {/* details and title */}
               <div className="w-2/3">
                 <div className="flex items-center gap-4 text-sm lg:text-base mb-4">
-                  <h1 className="font-semibold">0{count++}.</h1>
+                  <h1 className="font-semibold">0{index + 2}.</h1>
                   <Link
                     to={`/posts?cat=${category.toLowerCase()}`}
                     className="text-blue-800"

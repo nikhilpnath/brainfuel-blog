@@ -97,10 +97,19 @@ const Upload = ({
         accept={`${type}/*`}
       />
       <div
-        className="cursor-pointer"
+        role="button"
+        tabIndex={0}
+        aria-label="Upload media file"
+        className="cursor-pointer inline-block"
         onClick={(e) => {
           e.preventDefault();
           ref.current?.click();
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            ref.current?.click();
+          }
         }}
       >
         {children}

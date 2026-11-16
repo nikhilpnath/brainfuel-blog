@@ -30,29 +30,32 @@ const Sidemenu = ({ showFilter = true }: { showFilter?: boolean }) => {
       <div className={`${showFilter ? "block" : "hidden"}`}>
         <h1 className="mb-4 mt-8 text-sm font-medium">Filter</h1>
         <div className="flex flex-col gap-2 text-sm">
-          {sort.map((sortItem, index) => (
-            <label
-              htmlFor="sort"
-              className="flex items-center gap-2 cursor-pointer"
-              key={sortItem + index}
-            >
-              <input
-                type="radio"
-                name="sort"
-                id="sort"
-                checked={sortParam ? sortParam === sortItem : false}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleParams("sort")(e.target.value)
-                }
-                value={sortItem}
-                className="appearance-none w-4 h-4 border-[1.5px] border-blue-800 cursor-pointer rounded-sm bg-white checked:bg-blue-800"
-              />
-              {sortItem.charAt(0).toUpperCase() + sortItem.slice(1)}
-              {index === sort.length - 1 && sortParam === "trending" && (
-                <span className="text-xs">(last 7 days)</span>
-              )}
-            </label>
-          ))}
+          {sort.map((sortItem, index) => {
+            const inputId = `sort-${sortItem}`;
+            return (
+              <label
+                htmlFor={inputId}
+                className="flex items-center gap-2 cursor-pointer"
+                key={sortItem + index}
+              >
+                <input
+                  type="radio"
+                  name="sort"
+                  id={inputId}
+                  checked={sortParam ? sortParam === sortItem : false}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleParams("sort")(e.target.value)
+                  }
+                  value={sortItem}
+                  className="appearance-none w-4 h-4 border-[1.5px] border-blue-800 cursor-pointer rounded-sm bg-white checked:bg-blue-800"
+                />
+                {sortItem.charAt(0).toUpperCase() + sortItem.slice(1)}
+                {index === sort.length - 1 && sortParam === "trending" && (
+                  <span className="text-xs text-gray-500">(last 7 days)</span>
+                )}
+              </label>
+            );
+          })}
         </div>
       </div>
 

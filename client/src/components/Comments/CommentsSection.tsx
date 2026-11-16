@@ -1,21 +1,15 @@
-import { useRef, useState } from "react";
-
-import { toast } from "react-toastify";
 import { useUser } from "@clerk/clerk-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 import Comment from "./Comment";
 import { TComment } from "@/types/types";
-import {useUseQueryHook,useUseMutationHook} from "@/hooks";
+import { useUseQueryHook, useUseMutationHook } from "@/hooks";
 
 type TUseQueryComments = Array<TComment>;
 
 const CommentsSection = ({ postId }: { postId: string }) => {
-  const [cmterror, setCmtError] = useState<string>("");
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
   const { user } = useUser();
-
   const queryClient = useQueryClient();
 
   const { isPending, error, data } = useUseQueryHook<TUseQueryComments>({
@@ -29,53 +23,57 @@ const CommentsSection = ({ postId }: { postId: string }) => {
     options: {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["comments", postId] });
-        if (textAreaRef.current) textAreaRef.current.value = "";
       },
     },
   });
 
-  // form handling
-  const handleFormData = (e: React.FormEvent) => {
+  // form handling with native validation
+  const handleFormData = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+    const form = e.currentTarget;
 
     if (!user) {
       toast.error("Signin to leave a comment");
       return;
     }
 
-    const comment: string = formData.get("comment")?.toString() || "";
-
-    if (!comment) {
-      setCmtError("Please enter a valid comment");
+    if (!form.checkValidity()) {
       return;
     }
 
-    setCmtError("");
-    addCommentMutation.mutate({ comment });
+    const formData = new FormData(form);
+    const comment = (formData.get("comment") as string)?.trim() || "";
+
+    if (!comment) return;
+
+    addCommentMutation.mutate(
+      { comment },
+      {
+        onSuccess: () => {
+          form.reset();
+        },
+      }
+    );
   };
 
   return (
     <div className="flex flex-col gap-8 lg:w-3/5">
       <h1 className="text-gray-500 underline text-xl">Post Your Thoughts</h1>
 
-      <form onSubmit={handleFormData}>
+      <form onSubmit={handleFormData} noValidate={false}>
         <div className="flex flex-col gap-2 md:flex-row md:gap-8 md:items-center">
           <textarea
             name="comment"
             rows={2}
-            ref={textAreaRef}
+            required
+            aria-label="Write a comment"
             placeholder="write something..."
-            className={`w-full py-2 px-4 focus:outline-none placeholder:italic rounded-xl ${
-              cmterror ? "border-2 border-red-600" : "mb-2 md:mb-0"
-            }`}
+            className="w-full py-2 px-4 focus:outline-none placeholder:italic rounded-xl border border-gray-200 mb-2 md:mb-0 transition-colors bg-white text-gray-800"
           />
-          {cmterror && (
-            <p className="text-red-600 text-sm md:hidden">{cmterror} *</p>
-          )}
           <button
+            type="submit"
             disabled={addCommentMutation.isPending}
-            className={`bg-blue-800 rounded text-white px-6 py-3 font-medium ${
+            className={`bg-blue-800 rounded text-white px-6 py-3 font-medium cursor-pointer ${
               addCommentMutation.isPending
                 ? "opacity-50 cursor-not-allowed"
                 : ""
@@ -84,9 +82,6 @@ const CommentsSection = ({ postId }: { postId: string }) => {
             Send
           </button>
         </div>
-        {cmterror && (
-          <p className="mt-2 text-red-600 hidden md:block">{cmterror} *</p>
-        )}
       </form>
 
       {/* comments */}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import { useUser } from "@clerk/clerk-react";
 
 import { useUseMutationHook } from "@/hooks";
@@ -96,6 +97,9 @@ const NewPost = () => {
     type: "cover" | "image" | "video",
     data: { filePath: string; name: string } | string
   ) => {
+    if (type === "cover") {
+      clearError("img");
+    }
     setContentMedia((prev) => {
       if (type === "cover") {
         return {
@@ -120,11 +124,21 @@ const NewPost = () => {
     });
   };
 
+  const clearError = (field: keyof TInputErrors) => {
+    if (inputErrors[field]) {
+      setInputErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[field];
+        return updated;
+      });
+    }
+  };
+
   // form handling
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target as HTMLFormElement);
+    const formData = new FormData(e.currentTarget);
 
     const data: TFormData = {
       img: contentMedia.coverImg.filePath || "",
@@ -155,9 +169,13 @@ const NewPost = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] flex flex-col gap-6">
+    <div className="min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-80px)] flex flex-col gap-6">
       <h1 className="text-xl font-light">Create a new post</h1>
-      <form className="flex flex-col gap-6 flex-1 mb-6" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-6 flex-1 mb-6"
+        onSubmit={handleSubmit}
+        noValidate
+      >
         {0 < progress && progress <= 100 ? (
           <span>Uploading...</span>
         ) : contentMedia.coverImg.name ? (
@@ -171,7 +189,10 @@ const NewPost = () => {
               getMedia={getMedia}
               getMediaIds={getMediasIdOnSuccess}
             >
-              <button className="bg-white text-gray-500 p-2 shadow-md rounded-xl text-sm w-max">
+              <button
+                type="button"
+                className="bg-white text-gray-500 p-2 shadow-md rounded-xl text-sm w-max cursor-pointer"
+              >
                 Add Cover Image
               </button>
               {inputErrors.img && (
@@ -184,9 +205,12 @@ const NewPost = () => {
           <input
             type="text"
             name="title"
+            aria-label="Post title"
             placeholder="My Awesome Story"
-            className="text-[28px] sm:text-4xl font-semibold bg-transparent outline-none placeholder:text-[28px] placeholder:sm:text-4xl"
-            autoFocus
+            onChange={(e) => {
+              if (e.target.value.trim()) clearError("title");
+            }}
+            className="text-[28px] sm:text-4xl font-semibold bg-transparent outline-none text-gray-800 placeholder:text-gray-400 placeholder:text-[28px] placeholder:sm:text-4xl w-full"
           />
           {inputErrors.title && (
             <p className="mt-1 text-red-600">{inputErrors.title} *</p>
@@ -194,16 +218,16 @@ const NewPost = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <label htmlFor="category" className="text-md ">
+          <label htmlFor="category" className="text-md text-gray-700">
             Choose A Category:
           </label>
           <select
             name="category"
             id="category"
-            className="bg-white p-2 shadow-md rounded-xl focus:outline-none"
+            className="bg-white text-gray-800 p-2 shadow-md rounded-xl focus:outline-none cursor-pointer"
           >
             {CategoriesColl.map((cat, index) => (
-              <option value={cat} key={cat + index}>
+              <option value={cat} key={cat + index} className="text-gray-800 bg-white">
                 {cat
                   .split("-")
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -216,8 +240,12 @@ const NewPost = () => {
         <div>
           <textarea
             name="desc"
+            aria-label="Post description"
             placeholder="Description"
-            className="w-full bg-white p-4 shadow-md rounded-xl focus:outline-none"
+            onChange={(e) => {
+              if (e.target.value.trim()) clearError("desc");
+            }}
+            className="w-full bg-white text-gray-800 placeholder:text-gray-400 p-4 shadow-md rounded-xl focus:outline-none"
           />
           {inputErrors.desc && (
             <p className="mt-1 text-red-600">{inputErrors.desc} *</p>
@@ -249,7 +277,10 @@ const NewPost = () => {
               className="flex-1 bg-white shadow-md rounded-xl w-0 "
               placeholder="Content"
               value={content}
-              onChange={setContent}
+              onChange={(value) => {
+                setContent(value);
+                if (value && value !== "<p><br></p>") clearError("content");
+              }}
               readOnly={0 < progress && progress <= 100}
             />
           </div>

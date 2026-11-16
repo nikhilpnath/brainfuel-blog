@@ -1,7 +1,6 @@
 import axios from "axios";
-import InfiniteScroll from "react-infinite-scroll-component";
 
-import { PostItem } from "@/components";
+import { InfiniteScroll, PostItem } from "@/components";
 import { TPostQueryData } from "@/types/types";
 import { usePostInfiniteQueryHook } from "@/hooks";
 

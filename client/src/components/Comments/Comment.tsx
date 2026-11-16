@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { format } from "timeago.js";
+import { format } from "@/utils/timeAgo";
 import { useUser } from "@clerk/clerk-react";
 import { useQueryClient } from "@tanstack/react-query";
 
