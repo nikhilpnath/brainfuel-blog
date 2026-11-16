@@ -7,7 +7,9 @@ const commentSchema = new Schema<TCommentSchemaModelType>({
     comment:
     {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        maxlength: 1000
     },
 
     user: {

@@ -4,6 +4,11 @@ import ImageKit from "imagekit";
 import Post from "@models/post.model";
 import User from "@models/user.model";
 import { createError } from "@util/customError";
+import {
+  isValidObjectId,
+  escapeRegex,
+  validateCreatePostInput,
+} from "@util/validators";
 
 import  { TPostType } from "../types/post.types";
 import { TCustomRequestHandler } from "../types/request.dto.types";
@@ -50,18 +55,22 @@ export const getPosts: TCustomRequestHandler<{}, {}, TQueryParams> = async (
     sort,
   } = req.query || {};
 
-  const pageNum = Number(page) || 1;
-  const dataLimit = Number(limit) || 5;
-  const search = searchVal?.trim();
+  // Clamp pagination to avoid negative offsets and unbounded memory consumption
+  const pageNum = Math.max(Number(page) || 1, 1);
+  const dataLimit = Math.min(Math.max(Number(limit) || 5, 1), 50);
+
+  // Sanitize search to prevent ReDoS and Regex Injection attacks
+  const search =
+    typeof searchVal === "string" ? searchVal.trim().slice(0, 100) : "";
 
   const query: TPostQuery = {};
 
-  if (cat) {
-    query.category = cat;
+  if (cat && typeof cat === "string") {
+    query.category = cat.trim();
   }
 
-  if (author) {
-    const user = await User.findOne({ username: author }).select("_id").lean();
+  if (author && typeof author === "string") {
+    const user = await User.findOne({ username: author.trim() }).select("_id").lean();
 
     if (!user) {
       return next(createError("No post found!", 404));
@@ -71,7 +80,8 @@ export const getPosts: TCustomRequestHandler<{}, {}, TQueryParams> = async (
   }
 
   if (search) {
-    query.title = { $regex: search, $options: "i" };
+    // Escaped regex ensures literal substring search without ReDoS risk
+    query.title = { $regex: escapeRegex(search), $options: "i" };
   }
 
   let sortObj: Record<string, 1 | -1> = { createdAt: -1 };
@@ -148,26 +158,21 @@ export const createPost: TCustomRequestHandler<{}, TPostType> = async (
 ) => {
   const { id } = await User.findUserByClerkID(req.auth?.userId!);
 
-  //checking if any of the input is empty
-  const emptyFields: string[] = [];
-
-  for (const [key, value] of Object.entries(req.body)) {
-    if (value === "") {
-      emptyFields.push(key);
-    }
+  const validation = validateCreatePostInput(req.body);
+  if (validation.error || !validation.data) {
+    return next(createError(validation.error || "Invalid post data", 400));
   }
 
-  if (emptyFields.length > 0) {
-    return next(
-      createError(`Please fill all fields: ${emptyFields.join(", ")}`, 400)
-    );
-  }
+  const { img, title, desc, category, content, media } = validation.data;
 
-  const { img, title, desc, category, isFeatured, visit, content, media } =
-    req.body;
+  // creating slug safely
+  let slug = title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
-  // creating slug
-  let slug = title.split(" ").join("-").toLowerCase();
+  if (!slug) slug = "post";
 
   let baseSlug = slug;
 
@@ -183,6 +188,7 @@ export const createPost: TCustomRequestHandler<{}, TPostType> = async (
     }
   }
 
+  // Enforce server-side defaults; prevent mass assignment / privilege tampering
   const blogPost = {
     img,
     title,
@@ -190,8 +196,8 @@ export const createPost: TCustomRequestHandler<{}, TPostType> = async (
     desc,
     category,
     media,
-    isFeatured,
-    visit,
+    isFeatured: false,
+    visit: 0,
     content,
     user: id,
   };
@@ -208,6 +214,10 @@ export const featurePost: TCustomRequestHandler<
   { postId: string }
 > = async (req, res, next) => {
   const { postId } = req.body;
+
+  if (!isValidObjectId(postId)) {
+    return next(createError("Invalid post ID", 400));
+  }
 
   const clerkUserId = req.auth?.userId;
 
@@ -245,6 +255,10 @@ export const deletePost: TCustomRequestHandler<{ postId: string }> = async (
 ) => {
   const { postId } = req.params;
 
+  if (!isValidObjectId(postId)) {
+    return next(createError("Invalid post ID", 400));
+  }
+
   const { id } = await User.findUserByClerkID(req.auth?.userId!);
   const role = req.auth?.sessionClaims?.metadata?.role || "user";
 
@@ -257,7 +271,9 @@ export const deletePost: TCustomRequestHandler<{ postId: string }> = async (
 
   try {
     //bulk deleting medias uploaded in imagekit
-    await imagekit.bulkDeleteFiles(post.media);
+    if (Array.isArray(post.media) && post.media.length > 0) {
+      await imagekit.bulkDeleteFiles(post.media);
+    }
   } catch (err) {
     return next(
       createError(

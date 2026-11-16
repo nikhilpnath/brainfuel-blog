@@ -9,23 +9,32 @@ const postSchema = new Schema<TPostSchemaModelType>(
     img: {
       type: String,
       required: true,
+      trim: true,
     },
     title: {
       type: String,
       required: true,
+      trim: true,
+      maxlength: 150,
     },
     slug: {
       type: String,
       required: true,
       unique: true,
+      trim: true,
+      maxlength: 200,
     },
     desc: {
       type: String,
       required: true,
+      trim: true,
+      maxlength: 500,
     },
     category: {
       type: String,
       default: "general",
+      trim: true,
+      maxlength: 50,
     },
     media: {
       type: [String],

@@ -158,10 +158,39 @@ const NewPost = () => {
     //error object
     const newErrors: TInputErrors = {};
 
-    if (!data.img) newErrors.img = "Cover Image is required";
-    if (!data.title) newErrors.title = "Title is required";
-    if (!data.desc) newErrors.desc = "Description is required";
-    if (!data.content) newErrors.content = "Content is required";
+    if (!data.img) {
+      newErrors.img = "Cover Image is required";
+    }
+
+    const cleanTitle = data.title.trim();
+    if (!cleanTitle) {
+      newErrors.title = "Title is required";
+    } else if (cleanTitle.length < 3) {
+      newErrors.title = "Title must be at least 3 characters";
+    } else if (cleanTitle.length > 150) {
+      newErrors.title = "Title cannot exceed 150 characters";
+    }
+
+    const cleanDesc = data.desc.trim();
+    if (!cleanDesc) {
+      newErrors.desc = "Description is required";
+    } else if (cleanDesc.length < 5) {
+      newErrors.desc = "Description must be at least 5 characters";
+    } else if (cleanDesc.length > 500) {
+      newErrors.desc = "Description cannot exceed 500 characters";
+    }
+
+    const plainContent = content.replace(/<[^>]*>/g, "").trim();
+    const hasMedia =
+      content.includes("<image") ||
+      content.includes("<img") ||
+      content.includes("<iframe");
+
+    if (!plainContent && !hasMedia) {
+      newErrors.content = "Content is required";
+    } else if (plainContent.length < 10 && !hasMedia) {
+      newErrors.content = "Content must be at least 10 characters";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setInputErrors(newErrors);

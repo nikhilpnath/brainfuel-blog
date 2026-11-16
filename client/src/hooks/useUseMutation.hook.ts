@@ -45,7 +45,9 @@ export default function useUseMutationHook<V>({
 
     onError: (error, variables, context) => {
       options?.onError?.(error, variables, context); // Call user-defined onError if provided
-      toast.error(error.response?.data.message);
+      const message =
+        error.response?.data?.message || "An unexpected error occurred.";
+      toast.error(message);
     },
   });
 }
