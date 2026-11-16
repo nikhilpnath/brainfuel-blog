@@ -1,11 +1,20 @@
 export function debounceMutation<F extends (...args: unknown[]) => void>(
   func: F,
   delay: number = 500
-): (...args: Parameters<F>) => void {
-  let timer: ReturnType<typeof setTimeout>;
+): ((...args: Parameters<F>) => void) & { cancel: () => void } {
+  let timer: ReturnType<typeof setTimeout> | undefined;
 
-  return (...args: Parameters<F>) => {
-    clearTimeout(timer); 
-    timer = setTimeout(() => func(...args), delay); 
+  const debounced = (...args: Parameters<F>) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
   };
+
+  debounced.cancel = () => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = undefined;
+    }
+  };
+
+  return debounced;
 }

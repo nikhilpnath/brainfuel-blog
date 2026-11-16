@@ -2,8 +2,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "@clerk/clerk-react";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { debounceMutation } from "@/utils/debounceMutation";
-import { useUseMutationHook, useUseQueryHook } from "@/hooks";
+import { useDebounceCallback, useUseMutationHook, useUseQueryHook } from "@/hooks";
 
 const SaveLater = ({ postId }: { postId: string }) => {
   const { isSignedIn } = useAuth();
@@ -28,10 +27,10 @@ const SaveLater = ({ postId }: { postId: string }) => {
     },
   });
 
-  const handleSaveLater = debounceMutation(() => {
+  const handleSaveLater = useDebounceCallback(() => {
     if (!isSignedIn) return toast.error("Sign in to save posts.");
     saveLaterMutation.mutate({ postId });
-  });
+  }, 500);
 
   return (
     <>

@@ -6,6 +6,7 @@ type tUseCustomHookReturn = {
   fetchNextPage: () => void;
   hasNextPage: boolean;
   message?: string;
+  isPending: boolean;
 };
 
 type TFetchData = (
@@ -31,13 +32,15 @@ export default function usePostInfiniteQueryHook(
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) =>
       lastPage.hasMore ? pages.length + 1 : undefined,
+    gcTime: 1000 * 60 * 10,
   });
 
-  if (status === "pending") return { allPosts: [], fetchNextPage, hasNextPage };
+  if (status === "pending")
+    return { allPosts: [], fetchNextPage, hasNextPage, isPending: true };
 
   if (status === "error") {
     console.error("An error has occurred:", error.message);
-    return { allPosts: [], fetchNextPage, hasNextPage };
+    return { allPosts: [], fetchNextPage, hasNextPage, isPending: false };
   }
 
   const allPosts = data.pages.flatMap((page) => page.posts) || [];
@@ -46,6 +49,7 @@ export default function usePostInfiniteQueryHook(
     allPosts,
     fetchNextPage,
     hasNextPage: hasNextPage || false,
-    message: data.pages[0].message,
+    message: data.pages[0]?.message,
+    isPending: false,
   };
 }

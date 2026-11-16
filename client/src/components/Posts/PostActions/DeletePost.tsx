@@ -1,16 +1,22 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useUseMutationHook } from "@/hooks";
 
 const DeletePost = ({ postId }: { postId: string }) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   const deletePostMutation = useUseMutationHook<void>({
     url: `posts/delete/${postId}`,
     method: "delete",
     options: {
-      onSuccess: () => navigate(-1),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["posts"] });
+        queryClient.invalidateQueries({ queryKey: ["featuredPost"] });
+        navigate(-1);
+      },
     },
   });
 

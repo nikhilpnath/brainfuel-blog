@@ -13,7 +13,8 @@ export const getComments: TCustomRequestHandler<{ postId: string }> = async (
 
   const comment = await Comment.find({ post: postId })
     .populate("user", "username img")
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .lean();
 
   res.status(200).json(comment);
 };

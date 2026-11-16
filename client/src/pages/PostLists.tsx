@@ -31,7 +31,7 @@ const PostLists = () => {
 
   const debouncedSearchParams = useDebounceValue(encodedParams, 700);
 
-  const { allPosts, fetchNextPage, hasNextPage, message } =
+  const { allPosts, fetchNextPage, hasNextPage, message, isPending } =
     usePostInfiniteQueryHook(fetchPostsWithParams, debouncedSearchParams);
 
   return (
@@ -44,7 +44,9 @@ const PostLists = () => {
       </button>
 
       <div className="flex flex-col-reverse gap-4 md:flex-row w-full">
-        {message ? (
+        {isPending ? (
+          <p className="flex-[2_2_0] text-xl text-gray-400">Loading posts...</p>
+        ) : message ? (
           <p className="flex-[2_2_0] text-xl">{message}</p>
         ) : (
           <div className={`${open ? "mt-5" : ""} flex-[2_2_0]`}>

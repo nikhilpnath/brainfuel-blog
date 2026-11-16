@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
@@ -32,6 +33,7 @@ const NewPost = () => {
   const { isLoaded, isSignedIn } = useUser();
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   //adding img and video to the textarea - reactquill
   useEffect(
@@ -71,7 +73,11 @@ const NewPost = () => {
     url: "posts/create",
     method: "post",
     options: {
-      onSuccess: (res) => navigate(`/posts/${res.slug}`),
+      onSuccess: (res) => {
+        queryClient.invalidateQueries({ queryKey: ["posts"] });
+        queryClient.invalidateQueries({ queryKey: ["featuredPost"] });
+        navigate(`/posts/${res.slug}`);
+      },
     },
   });
 

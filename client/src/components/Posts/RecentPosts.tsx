@@ -13,8 +13,12 @@ const fetchPosts = async (pageParam: number): Promise<TPostQueryData> => {
 };
 
 const RecentPosts = () => {
-  const { allPosts, fetchNextPage, hasNextPage } =
+  const { allPosts, fetchNextPage, hasNextPage, isPending } =
     usePostInfiniteQueryHook(fetchPosts);
+
+  if (isPending) {
+    return <p className="text-center py-6 text-gray-400">Loading posts...</p>;
+  }
 
   return (
     <>

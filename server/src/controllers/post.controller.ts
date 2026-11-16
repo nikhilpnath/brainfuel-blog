@@ -109,7 +109,8 @@ export const getPosts: TCustomRequestHandler<{}, {}, TQueryParams> = async (
     .populate("user", "username")
     .sort(sortObj)
     .limit(dataLimit)
-    .skip((pageNum - 1) * dataLimit);
+    .skip((pageNum - 1) * dataLimit)
+    .lean();
 
   if (posts.length === 0) {
     return res.status(200).json({
@@ -130,7 +131,9 @@ export const getPost: TCustomRequestHandler<{ slug: string }> = async (
 ) => {
   const { slug } = req.params;
 
-  const post = await Post.findOne({ slug }).populate("user", "username img");
+  const post = await Post.findOne({ slug })
+    .populate("user", "username img")
+    .lean();
 
   if (!post) return next(createError("Post not found", 404));
 
@@ -168,12 +171,12 @@ export const createPost: TCustomRequestHandler<{}, TPostType> = async (
 
   let baseSlug = slug;
 
-  let slugExists = await Post.findOne({ slug });
+  let slugExists = await Post.findOne({ slug }).select("_id").lean();
 
   for (let counter = 2; slugExists; counter++) {
     slug = `${baseSlug}-${counter}`;
 
-    slugExists = await Post.findOne({ slug });
+    slugExists = await Post.findOne({ slug }).select("_id").lean();
 
     if (!slugExists) {
       break;
@@ -215,7 +218,7 @@ export const featurePost: TCustomRequestHandler<
   if (role !== "admin")
     return next(createError("You cannot feature post", 403));
 
-  const post = await Post.findById(postId);
+  const post = await Post.findById(postId).select("isFeatured").lean();
 
   if (!post) return next(createError("Post Not found", 404));
 
@@ -229,7 +232,7 @@ export const featurePost: TCustomRequestHandler<
     {
       new: true,
     }
-  );
+  ).lean();
 
   res.status(200).json({ isFeatured: updatedPost?.isFeatured });
 };

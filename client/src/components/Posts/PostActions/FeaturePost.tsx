@@ -1,8 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 
 import { TPosts as TUSeQueryData } from "@/types/types";
-import { debounceMutation } from "@/utils/debounceMutation";
-import { useUseMutationHook, useUseQueryHook } from "@/hooks";
+import { useDebounceCallback, useUseMutationHook, useUseQueryHook } from "@/hooks";
 
 const FeaturePost = ({ postId, slug }: { postId: string; slug: string }) => {
   const queryClient = useQueryClient();
@@ -16,14 +15,17 @@ const FeaturePost = ({ postId, slug }: { postId: string; slug: string }) => {
     url: "posts/feature",
     method: "patch",
     options: {
-      onSuccess: () =>
-        queryClient.invalidateQueries({ queryKey: ["featurepost", slug] }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["featurepost", slug] });
+        queryClient.invalidateQueries({ queryKey: ["featuredPost"] });
+        queryClient.invalidateQueries({ queryKey: ["posts"] });
+      },
     },
   });
 
-  const handleFeature = debounceMutation(() =>
-    featurePostMutation.mutate({ postId })
-  );
+  const handleFeature = useDebounceCallback(() => {
+    featurePostMutation.mutate({ postId });
+  }, 500);
 
   return (
     <>
