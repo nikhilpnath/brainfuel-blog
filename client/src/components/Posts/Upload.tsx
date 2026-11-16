@@ -1,34 +1,9 @@
 import { useRef } from "react";
 import { toast } from "react-toastify";
+import { useAuth } from "@clerk/clerk-react";
 import { IKContext, IKUpload } from "imagekitio-react";
 
 import { MediaUploadSucess } from "@/types/types";
-
-// imagekit - authenticator
-const authenticator = async () => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/api/posts/upload-auth`
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `Request failed with status ${response.status}: ${errorText}`
-      );
-    }
-
-    const data = await response.json();
-    const { signature, expire, token } = data;
-    return { signature, expire, token };
-  } catch (err) {
-    if (err instanceof Error) {
-      err.message = `Authentication request failed: ${err.message}`;
-      throw err;
-    }
-    throw new Error("Authentication request failed: Unknown error");
-  }
-};
 
 type TProps = {
   to?: string;
@@ -51,6 +26,39 @@ const Upload = ({
   getMedia,
 }: TProps) => {
   const ref = useRef<HTMLInputElement>(null);
+  const { getToken } = useAuth();
+
+  // imagekit - authenticator
+  const authenticator = async () => {
+    try {
+      const token = await getToken();
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/api/posts/upload-auth`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Request failed with status ${response.status}: ${errorText}`
+        );
+      }
+
+      const data = await response.json();
+      const { signature, expire, token: ikToken } = data;
+      return { signature, expire, token: ikToken };
+    } catch (err) {
+      if (err instanceof Error) {
+        err.message = `Authentication request failed: ${err.message}`;
+        throw err;
+      }
+      throw new Error("Authentication request failed: Unknown error");
+    }
+  };
 
   //image/video upload
   const onError = () => {
