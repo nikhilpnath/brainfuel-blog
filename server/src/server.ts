@@ -12,7 +12,6 @@ import logger from "./logger";
 import { connectToDB } from "@config/connectDB";
 import webhookRoute from "@routes/webhook.route";
 import { errorHandler } from "@middleware/errorHandler.middleware";
-import { IKUploadAuth } from "@middleware/ikUploadHandler.middleware";
 
 const app: Application = express();
 const PORT = Number(process.env.PORT) || 8000;
@@ -25,7 +24,10 @@ app.use("/webhooks", webhookRoute);
 // thats why we put this route above
 
 const options: CorsOptions = {
-  origin: [process.env.CLIENT_URL],
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 const morganFormat = ":method :url :status :response-time ms";
@@ -35,7 +37,6 @@ app
   .use(express.urlencoded({ extended: true }))
   .use(express.json())
   .use(cors(options))
-  .use(IKUploadAuth) //imagekit upload auth
   .use(
     morgan(morganFormat, {
       stream: {
