@@ -17,7 +17,7 @@ router.get("/upload-auth", requireAuth, mutationLimiter, uploadAuth);
 router.get("/", getPosts);
 router.get("/:slug", increaseVisit, getPost);
 router.post("/create", requireAuth, mutationLimiter, createPost);
-router.patch("/feature", requireAuth, featurePost);
-router.delete("/delete/:postId", requireAuth, deletePost);
+router.patch("/feature", requireAuth, mutationLimiter, featurePost);
+router.delete("/delete/:postId", requireAuth, mutationLimiter, deletePost);
 
 export default router;

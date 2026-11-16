@@ -11,6 +11,6 @@ const router = Router();
 
 router.get("/:postId", getComments);
 router.post("/:postId", requireAuth, mutationLimiter, addComment);
-router.delete("/:id", requireAuth, deleteComment);
+router.delete("/:id", requireAuth, mutationLimiter, deleteComment);
 
 export default router;
