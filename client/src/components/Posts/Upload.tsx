@@ -8,7 +8,7 @@ import { MediaUploadSucess } from "@/types/types";
 type TProps = {
   to?: string;
   type: string;
-  getMediaIds: (id: string) => void;
+  getMediaIds?: (id: string) => void;
   getMedia: (
     type: "cover" | "image" | "video",
     data: { filePath: string; name: string } | string
@@ -16,6 +16,25 @@ type TProps = {
   children: React.ReactNode;
   setProgress: React.Dispatch<React.SetStateAction<number>>;
 };
+
+const MEDIA_CONFIG = {
+  image: {
+    accept: "image/png,image/jpeg,image/jpg,image/webp,image/gif,.png,.jpg,.jpeg,.webp,.gif",
+    types: ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/gif"],
+    exts: [".png", ".jpg", ".jpeg", ".webp", ".gif"],
+    maxSize: 10 * 1024 * 1024,
+    sizeLabel: "10MB",
+    typeLabel: "PNG, JPG, WEBP, or GIF image",
+  },
+  video: {
+    accept: "video/mp4,video/webm,video/ogg,.mp4,.webm,.ogg",
+    types: ["video/mp4", "video/webm", "video/ogg"],
+    exts: [".mp4", ".webm", ".ogg"],
+    maxSize: 50 * 1024 * 1024,
+    sizeLabel: "50MB",
+    typeLabel: "MP4, WEBM, or OGG video",
+  },
+} as const;
 
 const Upload = ({
   children,
@@ -28,7 +47,31 @@ const Upload = ({
   const ref = useRef<HTMLInputElement>(null);
   const { getToken } = useAuth();
 
-  // imagekit - authenticator
+  const config = type === "video" ? MEDIA_CONFIG.video : MEDIA_CONFIG.image;
+
+  // File validator for ImageKit
+  const validateFile = (file: File) => {
+    const ext = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+    const isValidType =
+      (config.types as readonly string[]).includes(file.type) ||
+      (config.exts as readonly string[]).includes(ext);
+
+    if (!isValidType) {
+      toast.error(`Invalid file format. Please upload a ${config.typeLabel}.`);
+      if (ref.current) ref.current.value = "";
+      return false;
+    }
+
+    if (file.size > config.maxSize) {
+      toast.error(`File is too large. Maximum size is ${config.sizeLabel}.`);
+      if (ref.current) ref.current.value = "";
+      return false;
+    }
+
+    return true;
+  };
+
+  // imagekit authenticator
   const authenticator = async () => {
     try {
       const token = await getToken();
@@ -60,32 +103,29 @@ const Upload = ({
     }
   };
 
-  //image/video upload
   const onError = () => {
     toast.error("Failed to Upload!");
+    setProgress(0);
+    if (ref.current) ref.current.value = "";
   };
 
   const onSuccess = (res: MediaUploadSucess) => {
-    getMediaIds(res.fileId);
-
-    if (to === "cover") {
-      const data = {
-        filePath: res.filePath,
-        name: res.name,
-      };
-      getMedia("cover", data);
-    } else {
-      const dataType = type === "image" ? "image" : "video";
-      getMedia(dataType, res.url);
+    if (getMediaIds) {
+      getMediaIds(res.fileId);
     }
 
-    toast.success("Successfully Uploaded !");
+    if (to === "cover") {
+      getMedia("cover", { filePath: res.filePath, name: res.name });
+    } else {
+      getMedia(type === "image" ? "image" : "video", res.url);
+    }
+
+    toast.success("Successfully Uploaded!");
     setProgress(0);
+    if (ref.current) ref.current.value = "";
   };
 
-  type TProgress = Record<string, number>;
-
-  const onUploadProgress = (progress: TProgress) => {
+  const onUploadProgress = (progress: Record<string, number>) => {
     setProgress(Math.round((progress.loaded / progress.total) * 100));
   };
 
@@ -98,11 +138,12 @@ const Upload = ({
       <IKUpload
         useUniqueFileName={true}
         onUploadProgress={onUploadProgress}
+        validateFile={validateFile}
         onError={onError}
         onSuccess={onSuccess}
-        className=" hidden"
+        className="hidden"
         ref={ref}
-        accept={`${type}/*`}
+        accept={config.accept}
       />
       <div
         role="button"

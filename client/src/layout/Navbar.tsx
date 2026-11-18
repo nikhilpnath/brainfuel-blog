@@ -4,11 +4,9 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
 function Links({
   className,
-  screen,
   onLinkClick,
 }: {
   className: string;
-  screen: "mobile" | "desktop";
   onLinkClick?: () => void;
 }) {
   return (
@@ -16,11 +14,9 @@ function Links({
       <Link to="/" onClick={onLinkClick}>
         Home
       </Link>
-      {screen === "mobile" && (
-        <Link to="/create" onClick={onLinkClick}>
-          Create Post
-        </Link>
-      )}
+      <Link to="/create" onClick={onLinkClick}>
+        Create Post
+      </Link>
       <Link to="/posts?sort=trending" onClick={onLinkClick}>
         Trending
       </Link>
@@ -77,8 +73,8 @@ const Navbar = () => {
         </span>
       </Link>
 
-      {/* Mobile Menu Trigger */}
-      <div className="md:hidden">
+      {/* Mobile & Tablet Hamburger Menu Trigger (below 1024px) */}
+      <div className="lg:hidden">
         <button
           type="button"
           aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -110,18 +106,14 @@ const Navbar = () => {
             ✕
           </button>
           <Links
-            screen="mobile"
             className="flex flex-col justify-center items-center gap-8 text-xl font-medium"
             onLinkClick={closeDrawer}
           />
         </dialog>
       </div>
 
-      {/* Desktop Menu */}
-      <Links
-        className="hidden md:flex items-center gap-8 xl:gap-12 font-medium"
-        screen="desktop"
-      />
+      {/* Desktop Menu (1024px and above) */}
+      <Links className="hidden lg:flex items-center gap-6 xl:gap-10 font-medium text-sm xl:text-base" />
     </nav>
   );
 };
