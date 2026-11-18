@@ -57,29 +57,38 @@ const CommentsSection = ({ postId }: { postId: string }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8 lg:w-3/5">
-      <h1 className="text-gray-500 underline text-xl">Post Your Thoughts</h1>
+    <div className="flex flex-col gap-6 w-full">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-bold text-gray-900 tracking-tight">
+          Discussion & Thoughts
+        </h2>
+        {data && (
+          <span className="text-xs font-semibold px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full">
+            {data.length} {data.length === 1 ? "comment" : "comments"}
+          </span>
+        )}
+      </div>
 
       <form onSubmit={handleFormData} noValidate={false}>
-        <div className="flex flex-col gap-2 md:flex-row md:gap-8 md:items-center">
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <textarea
             name="comment"
             rows={2}
             required
             aria-label="Write a comment"
-            placeholder="write something..."
-            className="w-full py-2 px-4 focus:outline-none placeholder:italic rounded-xl border border-gray-200 mb-2 md:mb-0 transition-colors bg-white text-gray-800"
+            placeholder="Share your perspective or ask a question..."
+            className="w-full py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-blue-800/20 focus:border-blue-800 rounded-2xl border border-gray-200 transition-all bg-white text-gray-800 text-sm shadow-sm"
           />
           <button
             type="submit"
             disabled={addCommentMutation.isPending}
-            className={`bg-blue-800 rounded text-white px-6 py-3 font-medium cursor-pointer ${
+            className={`bg-blue-800 hover:bg-blue-900 rounded-2xl text-white px-6 py-3 font-semibold text-sm cursor-pointer transition-colors shadow-sm shrink-0 ${
               addCommentMutation.isPending
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             } `}
           >
-            Send
+            {addCommentMutation.isPending ? "Sending..." : "Post Comment"}
           </button>
         </div>
       </form>

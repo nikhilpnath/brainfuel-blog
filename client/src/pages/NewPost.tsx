@@ -86,9 +86,13 @@ const NewPost = () => {
   if (isLoaded && !isSignedIn) {
     return (
       <ErrorCmp
-        text="Your voice matters! Sign in to post."
-        btnText="Sign In"
+        icon="✍️"
+        title="Share Your Story on BrainFuel"
+        text="Your voice matters! Sign in to write in-depth tutorials, share architecture insights, and publish your ideas."
+        btnText="Sign In to Continue →"
         btnAction={() => navigate("/login")}
+        secondaryBtnText="Explore Posts"
+        secondaryBtnAction={() => navigate("/posts")}
       />
     );
   }

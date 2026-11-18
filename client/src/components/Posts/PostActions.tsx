@@ -18,7 +18,9 @@ const PostActions = ({ post }: { post: TProps }) => {
 
   return (
     <div>
-      <h1 className="mb-2 text-sm font-medium underline">Actions</h1>
+      <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
+        Post Actions
+      </h2>
       <SaveLater postId={post._id} />
 
       {/* feature post - admin */}

@@ -42,35 +42,44 @@ const PostItem = ({ post }: TParam) => {
       <div className="flex flex-col gap-4 md:w-3/5 xl:w-2/3">
         <Link
           to={`/posts/${post.slug}`}
-          className="text-xl md:text-3xl xl:text-4xl font-semibold"
+          className="text-xl md:text-3xl xl:text-4xl font-semibold hover:text-blue-800 transition-colors"
         >
           {post.title}
         </Link>
-        <div className="flex items-center gap-2 text-gray-400 text-sm">
+        <div className="flex items-center gap-2 text-gray-500 text-sm flex-wrap">
           <span>Written by</span>
           <button
             type="button"
-            className="text-blue-800 hover:underline cursor-pointer"
+            className="text-blue-800 font-medium hover:underline cursor-pointer"
             onClick={() => handleParams("author")(post.user.username)}
           >
             {post.user.username}
           </button>
-          <span>on</span>
+          <span>•</span>
           <button
             type="button"
-            className="text-blue-800 hover:underline cursor-pointer"
+            className="text-blue-800 font-medium hover:underline cursor-pointer capitalize"
             onClick={() => handleParams("cat")(post.category)}
           >
             {category}
           </button>
-          <span>{format(post.createdAt)}</span>
+          <span>•</span>
+          <span className="text-gray-400">{format(post.createdAt)}</span>
         </div>
-        <p>{post.desc.substring(0, 300)}...</p>
+        <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+          {post.desc.substring(0, 300)}...
+        </p>
         <Link
           to={`/posts/${post.slug}`}
-          className="text-blue-800 underline text-sm"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-800 hover:text-blue-950 group w-max transition-colors mt-1"
         >
-          Read More
+          <span>Read Article</span>
+          <span
+            className="transform transition-transform group-hover:translate-x-1 text-base font-bold"
+            aria-hidden="true"
+          >
+            →
+          </span>
         </Link>
       </div>
     </div>

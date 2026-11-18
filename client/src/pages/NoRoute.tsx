@@ -7,9 +7,15 @@ const NoRoute = () => {
 
   return (
     <ErrorCmp
-      text="Oops! We couldn't find the page "
+      icon="🔍"
+      title="Page Not Found (404)"
+      text="We couldn't locate the requested page:"
       path={location.pathname}
-      btnAction={() => navigate(-1)}
+      desc="The link you clicked may be broken or the URL may have been mistyped."
+      btnText="Back to Home"
+      btnAction={() => navigate("/")}
+      secondaryBtnText="Explore Posts"
+      secondaryBtnAction={() => navigate("/posts")}
     />
   );
 };

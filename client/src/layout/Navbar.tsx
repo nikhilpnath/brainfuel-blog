@@ -2,8 +2,6 @@ import { Link } from "react-router";
 import { useRef, useState } from "react";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
-import { Image } from "@/components";
-
 function Links({
   className,
   screen,
@@ -66,9 +64,17 @@ const Navbar = () => {
       className="w-full h-16 md:h-20 flex items-center justify-between"
     >
       {/* LOGO */}
-      <Link to="/" className="flex gap-4 items-center text-2xl font-bold">
-        <Image src="logo.png" alt="logo" className="w-8" w="32" h="32" />
-        <span className="first-letter:text-4xl tracking-wide">BrainFuel</span>
+      <Link to="/" className="flex gap-3 items-center text-2xl font-bold group">
+        <img
+          src="/logo.png"
+          alt="BrainFuel logo"
+          className="w-9 h-9 object-contain rounded-xl transition-transform group-hover:scale-105"
+          width="36"
+          height="36"
+        />
+        <span className="tracking-tight text-gray-900 font-extrabold text-2xl">
+          Brain<span className="text-blue-800">Fuel</span>
+        </span>
       </Link>
 
       {/* Mobile Menu Trigger */}

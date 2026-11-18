@@ -43,9 +43,15 @@ const SinglePost = () => {
   if (!data) {
     return (
       <ErrorCmp
-        text="Oops! We couldn't find any post with the slug: "
-        path={slug!}
-        btnAction={() => navigate(-1)}
+        icon="📄"
+        title="Post Not Found"
+        text="Oops! We couldn't find any post matching:"
+        path={slug}
+        desc="The article may have been deleted, moved, or the URL might be mistyped."
+        btnText="Browse All Posts"
+        btnAction={() => navigate("/posts")}
+        secondaryBtnText="Back to Home"
+        secondaryBtnAction={() => navigate("/")}
       />
     );
   }
@@ -101,17 +107,23 @@ const SinglePost = () => {
 
       {/* second section */}
       <div className="flex flex-col md:flex-row gap-12">
-        {/* content */}
-        <div
-          className="flex flex-col gap-6 text-justify lg:text-lg md:w-4/5 post-content flex-[2_2_0]"
-          dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
-        />
+        {/* main column (article body + comments) */}
+        <div className="flex flex-col gap-10 md:w-4/5 flex-[2_2_0]">
+          <div
+            className="flex flex-col gap-6 text-justify lg:text-lg post-content"
+            dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
+          />
+          <hr className="border-gray-200/80 my-2" />
+          <CommentsSection postId={data._id} />
+        </div>
 
-        {/* sidemenu - sticky */}
-        <div className="h-max sticky top-8 flex-1">
+        {/* sidemenu - sticky on desktop */}
+        <div className="h-max md:sticky md:top-8 flex-1">
           <div className="flex flex-col gap-4 mb-4">
-            <h1 className="font-semibold text-sm">Author</h1>
-            <div className="flex items-center gap-4">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+              Author
+            </h2>
+            <div className="flex items-center gap-4 bg-white/70 backdrop-blur-sm p-4 rounded-2xl border border-slate-100 shadow-sm">
               <img
                 src={data.user.img}
                 alt="User profile"
@@ -119,12 +131,15 @@ const SinglePost = () => {
                 width="48"
                 height="48"
               />
-              <Link
-                to={`/posts?author=${data.user.username}`}
-                className="text-blue-800"
-              >
-                {data.user.username}
-              </Link>
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-400">Written by</span>
+                <Link
+                  to={`/posts?author=${data.user.username}`}
+                  className="text-blue-800 font-semibold hover:underline"
+                >
+                  {data.user.username}
+                </Link>
+              </div>
             </div>
 
             {/* post actions */}
@@ -140,8 +155,6 @@ const SinglePost = () => {
           <Sidemenu showFilter={false} />
         </div>
       </div>
-
-      <CommentsSection postId={data._id} />
     </div>
   );
 };
