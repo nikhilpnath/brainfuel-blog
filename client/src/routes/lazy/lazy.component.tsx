@@ -8,6 +8,7 @@ const pathToModuleMap = {
   SinglePost: () => import("@/pages/SinglePost"),
   PostLists: () => import("@/pages/PostLists"),
   NewPost: () => import("@/pages/NewPost"),
+  SavedPosts: () => import("@/pages/SavedPosts"),
   About: () => import("@/pages/About"),
 } as const;
 

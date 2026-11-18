@@ -17,6 +17,11 @@ function Links({
       <Link to="/create" onClick={onLinkClick}>
         Create Post
       </Link>
+      <SignedIn>
+        <Link to="/saved" onClick={onLinkClick}>
+          Saved
+        </Link>
+      </SignedIn>
       <Link to="/posts?sort=trending" onClick={onLinkClick}>
         Trending
       </Link>

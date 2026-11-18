@@ -34,6 +34,10 @@ export const router = createBrowserRouter([
         element: lazyLoad("NewPost")(),
       },
       {
+        path: "/saved",
+        element: lazyLoad("SavedPosts")(),
+      },
+      {
         path: "/write",
         element: <Navigate to="/create" replace />,
       },

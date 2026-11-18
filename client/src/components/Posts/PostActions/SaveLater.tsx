@@ -22,8 +22,10 @@ const SaveLater = ({ postId }: { postId: string }) => {
     method: "patch",
     toastData: `${isSaved ? "Removed from" : "Added to"} savelater`,
     options: {
-      onSuccess: () =>
-        queryClient.invalidateQueries({ queryKey: ["savedPosts"] }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["savedPosts"] });
+        queryClient.invalidateQueries({ queryKey: ["posts", "saved"] });
+      },
     },
   });
 
