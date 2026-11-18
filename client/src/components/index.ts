@@ -10,6 +10,7 @@ import Sidemenu from "./Posts/Sidemenu";
 import RecentPosts from "./Posts/RecentPosts";
 import PostActions from "./Posts/PostActions";
 import FeaturedPosts from "./Posts/FeaturedPosts";
+import FeaturedSkeleton from "./Posts/FeaturedSkeleton";
 
 import CommentsSection from "./Comments/CommentsSection";
 
@@ -25,5 +26,6 @@ export {
   InfiniteScroll,
   PostActions,
   FeaturedPosts,
+  FeaturedSkeleton,
   CommentsSection,
 };
