@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 
 import NoRoute from "@/pages/NoRoute";
 import MainLayout from "@/layout/MainLayout";
@@ -33,7 +33,14 @@ export const router = createBrowserRouter([
         path: "/create",
         element: lazyLoad("NewPost")(),
       },
-
+      {
+        path: "/write",
+        element: <Navigate to="/create" replace />,
+      },
+      {
+        path: "/about",
+        element: lazyLoad("About")(),
+      },
       {
         path: "*",
         element: <NoRoute />,

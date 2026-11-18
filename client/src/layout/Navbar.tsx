@@ -29,7 +29,7 @@ function Links({
       <Link to="/posts?sort=popular" onClick={onLinkClick}>
         Most Popular
       </Link>
-      <Link to="/" onClick={onLinkClick}>
+      <Link to="/about" onClick={onLinkClick}>
         About
       </Link>
       <SignedOut>

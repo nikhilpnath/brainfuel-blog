@@ -27,19 +27,19 @@ const PostItem = ({ post }: TParam) => {
   };
 
   return (
-    <div className="flex flex-col xl:flex-row gap-8 mb-12">
+    <div className="flex flex-col md:flex-row gap-8 mb-12">
       {/* image */}
-      <div className="md:hidden xl:block xl:w-2/3">
+      <div className="w-full md:w-2/5 xl:w-1/3 shrink-0">
         <ImageCmp
-          src={post.img ?? "postImg.jpeg"}
-          alt="Recent Post"
-          className="rounded-2xl object-cover"
+          src={post.img ?? "featured1.jpeg"}
+          alt={post.title}
+          className="rounded-2xl object-cover w-full h-56 md:h-full max-h-64"
           w="735"
-          h='435'
+          h="435"
         />
       </div>
       {/* details */}
-      <div className="flex flex-col gap-4 xl:w-2/3 ">
+      <div className="flex flex-col gap-4 md:w-3/5 xl:w-2/3">
         <Link
           to={`/posts/${post.slug}`}
           className="text-xl md:text-3xl xl:text-4xl font-semibold"

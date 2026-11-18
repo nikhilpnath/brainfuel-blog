@@ -14,7 +14,7 @@ const Homepage = () => {
           </h1>
           <p className="mt-8 text-md md:text-xl">
             Dive into handpicked stories and insights designed to inspire,
-            inform, and keep you learning every day."
+            inform, and keep you learning every day.
           </p>
         </div>
 

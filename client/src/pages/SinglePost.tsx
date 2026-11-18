@@ -43,7 +43,7 @@ const SinglePost = () => {
   if (!data) {
     return (
       <ErrorCmp
-        text="Oops! We couldn't any post with the slug: "
+        text="Oops! We couldn't find any post with the slug: "
         path={slug!}
         btnAction={() => navigate(-1)}
       />
@@ -61,7 +61,7 @@ const SinglePost = () => {
   return (
     <div className="flex flex-col gap-8">
       {/* first section */}
-      <div className="flex gap-8 my-5">
+      <div className="flex flex-col lg:flex-row gap-8 my-5">
         {/* details */}
         <div className="flex flex-col gap-4 lg:w-3/4">
           <h1 className="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold">
@@ -87,14 +87,16 @@ const SinglePost = () => {
         </div>
 
         {/* image */}
-        <div className="hidden lg:block w-2/5">
-          <Image
-            src={data.img}
-            alt="post_image"
-            className="rounded-2xl  h-72 object-cover"
-            w="600"
-          />
-        </div>
+        {data.img && (
+          <div className="w-full lg:w-2/5 shrink-0">
+            <Image
+              src={data.img}
+              alt={data.title || "post_image"}
+              className="rounded-2xl w-full h-64 md:h-72 object-cover"
+              w="600"
+            />
+          </div>
+        )}
       </div>
 
       {/* second section */}
